@@ -16,6 +16,7 @@ char sendIP[] = "192.168.4.1";
 boolean sender_up = 0;
 long rssi;
 long j=0;
+char testPacket[27]="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 void setup()
 {
@@ -57,24 +58,19 @@ void loop()
         incomingPacket[len] = 0;
       }
       //Serial.printf("UDP packet contents: %s\n", incomingPacket);
-      char temp[255];
-      rssi = WiFi.RSSI();
-      Serial.print("Rssi:");
-      j = j+1;
-      Serial.println(j);
-      //Serial.println(rssi); teste
-      rssi = abs(rssi);
-      char buff[3];
-      dtostrf(rssi,3,0,buff);
+
+      Serial.println(testPacket[j]);
+      
       // send back a reply, to the IP address and port we got the packet from
       Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
-      char array[14]="abcdefghijklm";
-      //Udp.write(buff); teste
-      Udp.write(array[j]);
+      Udp.write(testPacket[j]);
       Udp.endPacket();
+      
+      j++;
+      if(j==27){
+        j=0;  
+      }
     }
-  //  Serial.println("Waiting for packet");
-  //  delay(1000);
   }
 }
 

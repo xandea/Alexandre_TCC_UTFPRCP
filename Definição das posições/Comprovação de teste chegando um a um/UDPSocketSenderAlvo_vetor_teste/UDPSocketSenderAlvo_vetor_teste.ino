@@ -67,19 +67,9 @@ void loop()
       {
         incomingPacket[len] = 0;
       }
-      //Serial.print(incomingPacket);
-      Serial.printf("D%s\n", incomingPacket);     
-      /*int n = WiFi.scanNetworks();
-      if(n==0){
-        Serial.println("No networks found");
-      }else{
-        for(int i=0;i<n;++i){
-          Serial.print(WiFi.SSID(i));
-          Serial.print(WiFi.RSSI(i));
-          Serial.print(",");
-        }
-      } */
-      //Serial.println(WiFi.RSSI());
+      
+      Serial.printf("%s\n",incomingPacket);
+      
       // send back a reply, to the IP address and port we got the packet from
       Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
       Udp.write(replyPacket);
