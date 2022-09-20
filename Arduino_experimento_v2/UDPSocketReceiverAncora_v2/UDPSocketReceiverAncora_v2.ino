@@ -63,10 +63,12 @@ void loop()
       
       rssi = abs(rssi);
       
-      char buff[4];
+      char buff[5];
       dtostrf(rssi,2,0,buff);
       
       strcat(buff,",2");
+      buff[4] = '\0';
+      Serial.print(buff);
       // send back a reply, to the IP address and port we got the packet from
       Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
       Udp.write(buff);
