@@ -10,9 +10,17 @@ IPAddress subnet(255,255,255,0);
 
 unsigned int localUdpPort = 4211; 
 char incomingPacket[255];  // buffer for incoming packets
-char ReplyBuffer1[] = "Broadcast";
-char ReplyBuffer2[] = "A";
+char ReplyBuffer[] = "Broadcast";
 IPAddress Broadcast(192,168,1,255);
+
+IPAddress noAncora1(192,168,1,2);
+IPAddress Ancora2(192,168,1,3);
+
+char* stringAncora1[100];
+char* stringAncora2[100];
+
+int a1=0;
+int a2=0;
 
 WiFiUDP Udp;
 
@@ -41,26 +49,34 @@ void setup()
 
   Udp.begin(localUdpPort);
   Serial.printf("Now listening at UDP port %d\n", localUdpPort);
+
+  while(WiFi.softAPgetStationNum()==0){
+    delay(5000);
+    Serial.println("Not Connected");
+  }
+  Serial.println("Station Connected");
+  delay(5000);
+  broadcast();
 }
 
 void loop() {
   int packetSize = Udp.parsePacket();
   
   if (packetSize) {
+   
+    //Serial.print("Received packet of size ");
 
-    Serial.print("Received packet of size ");
+    //Serial.println(packetSize);
 
-    Serial.println(packetSize);
-
-    Serial.print("From ");
+    //Serial.print("From ");
 
     IPAddress remoteIp = Udp.remoteIP();
 
-    Serial.print(remoteIp);
+    //Serial.print(remoteIp);
 
-    Serial.print(", port ");
+    //Serial.print(", port ");
 
-    Serial.println(Udp.remotePort());
+    //Serial.println(Udp.remotePort());
 
     // read the packet into packetBufffer
 
@@ -72,23 +88,37 @@ void loop() {
 
     }
 
-    Serial.println("Contents:");
+    //Serial.println("Contents:");
+    //Serial.println(incomingPacket);
 
-    Serial.println(incomingPacket);
+    if(remoteIp == noAncora1){
+      Serial.println("Ancora1 :");
+      stringAncora1[a1] = incomingPacket;
+      Serial.println(stringAncora1[a1]);
+      a1++;
+    }else{
+      Serial.println("Ancora2: ");
+      stringAncora2[a2] = incomingPacket;
+      Serial.println(stringAncora2[a2]);
+      a2++;   
+    }
 
-    // send a reply, to the IP address and port that sent us the packet we received
+  /*if(a1 == 10){
+    for(int j=0; j<=a1;j++){
+    Serial.println(stringAncora1[j]);  
+    }  
+  }*/
 
-  Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
-  Udp.write(ReplyBuffer2);
-  Udp.endPacket();
-
+  // send a reply, to the IP address and port that sent us the packet we received
+  delay(1000);
+  broadcast();
   }
+}
 
+void broadcast(){
   if(Udp.beginPacket(Broadcast, localUdpPort) == 1){
-    Udp.write(ReplyBuffer1);
-    Serial.println(ReplyBuffer1);
+    Udp.write(ReplyBuffer);
+    Serial.println(ReplyBuffer);
     Udp.endPacket();
     };
-  
-  delay(1000);
 }
