@@ -12,6 +12,9 @@ unsigned int localUdpPort = 4211;
 char incomingPacket[255];  // buffer for incoming packets
 char ReplyBuffer[] = "Reply";
 
+long rssi;
+char buff[3];
+
 WiFiUDP Udp;
 
 void setup()
@@ -42,6 +45,8 @@ void setup()
   
   Udp.begin(localUdpPort);
   Serial.printf("Connected, IP address: %s, UDP port %d\n", WiFi.localIP().toString().c_str(), localUdpPort);
+  
+  delay(5000);
   
 }
 
@@ -76,12 +81,25 @@ void loop() {
 
     Serial.println("Contents:");
 
-    Serial.println(incomingPacket);
+    Serial.print(incomingPacket);
 
-    // send a reply, to the IP address and port that sent us the packet we received
-
-  Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
-  Udp.write("TESTE2");
-  Udp.endPacket();
+    acquireRSSI();
+    
+    // send back a reply, to the IP address and port we got the packet from
+    Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
+    Udp.write(buff);
+    Udp.endPacket();
   }
+}
+
+void acquireRSSI(){
+  rssi = WiFi.RSSI();
+  Serial.print("Rssi:");
+  Serial.print(rssi);
+      
+  rssi = abs(rssi);
+      
+  dtostrf(rssi,2,0,buff);
+  buff[2] = '\0';
+  Serial.println(buff);
 }
