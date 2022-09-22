@@ -16,11 +16,18 @@ IPAddress Broadcast(192,168,1,255);
 IPAddress noAncora1(192,168,1,2);
 IPAddress Ancora2(192,168,1,3);
 
-char* stringAncora1[100];
-char* stringAncora2[100];
+//char* stringAncora1[100];
+//char* stringAncora2[100];
+
+int arrayAncora1[255];
+int arrayAncora2[255];
 
 int a1=0;
 int a2=0;
+
+double distance;
+float N = 3.4907;
+float A = 63;
 
 WiFiUDP Udp;
 
@@ -93,19 +100,20 @@ void loop() {
 
     if(remoteIp == noAncora1){
       Serial.println("Ancora1 :");
-      stringAncora1[a1] = incomingPacket;
-      Serial.println(stringAncora1[a1]);
+      arrayAncora1[a1] = String(incomingPacket).toInt();
+      Serial.println(arrayAncora1[a1]);
+      calcDistance(arrayAncora1[a1]);
       a1++;
     }else{
       Serial.println("Ancora2: ");
-      stringAncora2[a2] = incomingPacket;
-      Serial.println(stringAncora2[a2]);
+      arrayAncora2[a2] = String(incomingPacket).toInt();
+      Serial.println(arrayAncora1[a2]);
       a2++;   
     }
 
   /*if(a1 == 10){
     for(int j=0; j<=a1;j++){
-    Serial.println(stringAncora1[j]);  
+    Serial.println(arrayAncora1[j]);  
     }  
   }*/
 
@@ -121,4 +129,12 @@ void broadcast(){
     Serial.println(ReplyBuffer);
     Udp.endPacket();
     };
+}
+
+void calcDistance(long rssi){
+//RSSI = A - 10 * n * log( d )
+//d = 10^((A-RSSI)/10*n)
+float ratio = (rssi - A)/(10 * N);
+distance = pow(10,ratio);
+Serial.print(distance);
 }
