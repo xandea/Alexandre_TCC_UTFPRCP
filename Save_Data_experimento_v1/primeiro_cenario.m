@@ -1,4 +1,4 @@
-data_RSSI = readtable('H:\Meu Drive\UTFPR\2021.1\TCC1\Codigos\Save_Data\primeiro_cenario_400.csv');
+data_RSSI = readtable('H:\Meu Drive\UTFPR\2021.1\TCC1\Codigos\Save_Data_experimento_v1\primeiro_cenario_400.csv');
 
 distance = [.3 .5 1 2 4 6 9];
 
