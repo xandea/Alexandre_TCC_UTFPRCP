@@ -28,10 +28,12 @@ float minMax_y = 0;
 
 float distancia[3];
 
-float xPosicao[3] = {0.5 ,0.0 ,-0.5};
-float yPosicao[3] = {0.0 ,0.5 ,0.0};
+float xPosicao[3] = {2.0 ,0.0 ,-2.0};
+float yPosicao[3] = {0.0 ,2.0 ,0.0};
 
-int a1,a2,a3=0;
+int a1=0;
+int a2=0;
+int a3=0;
 
 double distance;
 float N = 3.4907;
@@ -130,21 +132,25 @@ void loop() {
     }
   
   // send a reply, to the IP address and port that sent us the packet we received
-  delay(300);
+  delay(20);
   broadcast();
   }
   if(a1==100 && a2==100 && a3==100){ 
     mediaAncora1 = somaAncora1/100;
     mediaAncora2 = somaAncora2/100;
-    mediaAncora2 = somaAncora3/100;
+    mediaAncora3 = somaAncora3/100;
     Serial.printf("Média Ancora 1: %f\nMédia Ancora 2: %f\nMédia Ancora 3: %f\n", mediaAncora1,mediaAncora2,mediaAncora3);
     distancia[0] = calcDistance(mediaAncora1);
     distancia[1] = calcDistance(mediaAncora2);
     distancia[2] = calcDistance(mediaAncora3);
     
     minMax();
-    a1,a2,a3 = 0;
-    somaAncora1,somaAncora2,somaAncora3=0;
+    a1 = 0;
+    a2 = 0;
+    a3 = 0;
+    somaAncora1=0;
+    somaAncora2=0;
+    somaAncora3=0;
   }
 }
 
@@ -201,6 +207,6 @@ Serial.println(min_y);
 minMax_x = (max_x + min_x)/2;
 minMax_y = (max_y + min_y)/2;
 Serial.println("X e Y");
-Serial.println(minMax_x);
-Serial.println(minMax_y);
+Serial.printf("D%f\n",minMax_x);
+Serial.printf("D%f\n",minMax_y);
 }
