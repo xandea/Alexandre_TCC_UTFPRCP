@@ -1,0 +1,7 @@
+Arduino_Experimento_v1 = Primeiro teste colocando 1 nó âncora x 1 nó alvo para definir o coeficiente
+Save_Data_experimento_v1 = Dados capturados do experimento 1
+
+Definição das posições ->Comprovação de teste chegando um a um =  Teste realizado para verificar se estava chegando valores diferentes para o nó alvo. Como não tem delay, estavamos preocupados se os valores RSSI's estavam repetidos. Comprovado que não
+Definição das posições ->Definição de posição com resistores =  Código com uma função de definir um valor (qualquer x) a partir de um resistor conectado no VCC e Pin de leitura
+
+Arduino_experimento_v2 = Segundo teste capturando informações de RSSI de diferentes nós e colocando dentro de um vetor.
