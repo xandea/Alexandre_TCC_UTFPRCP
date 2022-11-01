@@ -7,12 +7,12 @@ void setup() {
   String portName = Serial.list()[1]; 
   print(portName);
   mySerial = new Serial(this, portName, 115200); //Configura a porta serial
-  output = createWriter( "problema01.csv" ); //Cria o objeto arquivo para gravar os dados
+  output = createWriter( "0_3m.csv" ); //Cria o objeto arquivo para gravar os dados
   output.print(day()); //Escreve no arquivo as horas e os minutos atuais seguido do valor lido pelo sensor
-  output.print(" "); 
+  output.print(" ");
   output.print(month());
   output.print(" ");
-  output.print(year()); 
+  output.print(year());
   output.print(hour()); //Escreve no arquivo as horas e os minutos atuais seguido do valor lido pelo sensor
   output.print(":");
   output.println(minute());
