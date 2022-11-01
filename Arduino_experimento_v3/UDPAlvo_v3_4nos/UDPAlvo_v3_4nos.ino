@@ -16,33 +16,35 @@ IPAddress Broadcast(192,168,1,255);
 IPAddress noAncora1(192,168,1,2);
 IPAddress noAncora2(192,168,1,3);
 IPAddress noAncora3(192,168,1,4);
+IPAddress noAncora4(192,168,1,5);
 
 //char* stringAncora1[100];
 //char* stringAncora2[100];
 
-float somaAncora1, somaAncora2, somaAncora3 = 0;
-float mediaAncora1,mediaAncora2,mediaAncora3 = 0;
+float somaAncora1, somaAncora2, somaAncora3, somaAncora4 = 0;
+float mediaAncora1,mediaAncora2,mediaAncora3,mediaAncora4 = 0;
 
 float minMax_x = 0;
 float minMax_y = 0;
 
-float distancia[3];
+float distancia[4];
 
-//float xPosicao[3] = {0.3 ,0.0 ,-0.3};
-//float yPosicao[3] = {0.0 ,0.3 ,0.0};
+//float xPosicao[4] = {0.3 ,0.0 ,-0.3, 0.0};
+//float yPosicao[4] = {0.0 ,0.3 ,0.0 ,-0.3};
 
-//float xPosicao[3] = {0.5 ,0.0 ,-0.5};
-//float yPosicao[3] = {0.0 ,0.5 ,0.0};
+//float xPosicao[4] = {0.5 ,0.0 ,-0.5 ,0.0};
+//float yPosicao[4] = {0.0 ,0.5 ,0.0 ,-0.5};
 
-//float xPosicao[3] = {1.0 ,0.0 ,-1.0};
-//float yPosicao[3] = {0.0 ,1.0 ,0.0};
+//float xPosicao[4] = {1.0 ,0.0 ,-1.0 ,0.0};
+//float yPosicao[4] = {0.0 ,1.0 ,0.0 ,-1.0};
 
-float xPosicao[3] = {2.0 ,0.0 ,-2.0};
-float yPosicao[3] = {0.0 ,2.0 ,0.0};
+float xPosicao[4] = {2.0 ,0.0 ,-2.0 ,0.0};
+float yPosicao[4] = {0.0 ,2.0 ,0.0 ,-2.0};
 
 int a1=0;
 int a2=0;
 int a3=0;
+int a4=0;
 
 double distance;
 //float N = 3.4907; primeiro cenario
@@ -141,28 +143,40 @@ void loop() {
       Serial.println(a3);
       a3++;
       }   
+    }else if(remoteIp == noAncora4){
+      if(a4<100){
+      Serial.println("Ancora4: ");
+      somaAncora4 = somaAncora4 + String(incomingPacket).toInt();// Realizar soma dos valores de RSSI para calculo de média
+      Serial.println(somaAncora4);
+      Serial.println(a4);
+      a4++;
+      }   
     }
   
   // send a reply, to the IP address and port that sent us the packet we received
   delay(20);
   broadcast();
   }
-  if(a1==100 && a2==100 && a3==100){ 
+  if(a1==100 && a2==100 && a3==100 && a4==100){ 
     mediaAncora1 = somaAncora1/100;
     mediaAncora2 = somaAncora2/100;
     mediaAncora3 = somaAncora3/100;
-    Serial.printf("Média Ancora 1: %f\nMédia Ancora 2: %f\nMédia Ancora 3: %f\n", mediaAncora1,mediaAncora2,mediaAncora3);
+    mediaAncora4 = somaAncora4/100;
+    Serial.printf("Média Ancora 1: %f\nMédia Ancora 2: %f\nMédia Ancora 3: %f\nMédia Ancora 4: %f\n", mediaAncora1,mediaAncora2,mediaAncora3,mediaAncora4);
     distancia[0] = calcDistance(mediaAncora1);
     distancia[1] = calcDistance(mediaAncora2);
     distancia[2] = calcDistance(mediaAncora3);
+    distancia[3] = calcDistance(mediaAncora4);
     
     minMax();
     a1 = 0;
     a2 = 0;
     a3 = 0;
+    a4 = 0;
     somaAncora1=0;
     somaAncora2=0;
     somaAncora3=0;
+    somaAncora4=0;
   }
 }
 
@@ -186,7 +200,7 @@ return distance;
 void minMax(){
   float max_x, min_x, max_y, min_y;
 
-  for(int i = 0; i < 3; i++){
+  for(int i = 0; i < 4; i++){
     if(i==0){
       
       max_x = xPosicao[i] - distancia[i];
